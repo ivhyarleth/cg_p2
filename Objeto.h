@@ -28,8 +28,12 @@ public:
     GLint POSITION_ATTRIBUTE=0, NORMAL_ATTRIBUTE=1, TEXCOORD0_ATTRIBUTE=8;
     virtual GLuint setup()=0;
     virtual void display(Shader &sh)=0;
-    virtual void actualizarPosicion(float tiempo)=0;
+    //Svirtual void actualizarPosicion(float tiempo)=0;
     virtual glm::vec3 getColor() const { return glm::vec3(1.0f); }
+    virtual bool collidesWith(const Objeto* other) const {
+        // Al inicio no hay colisión entre objetos
+        return false;
+    }
 };
 
 class Esfera : public Objeto {
@@ -39,7 +43,7 @@ public:
     vec3 centro;
     float radius;
     int slices, stacks;
-    float tiempo_inicial;
+    //float tiempo_inicial;
 
 
     Esfera() {
@@ -65,6 +69,20 @@ public:
     }
     glm::vec3 getColor() const override {
         return color;
+    }
+
+    bool collidesWith(const Objeto* other) const override {
+        // Verificar si tmb es una esfera
+        const Esfera* otherEsfera = dynamic_cast<const Esfera*>(other);
+        if (otherEsfera) {
+            // Colision de esferas
+            float distance = glm::distance(centro, otherEsfera->centro);
+            float sumOfRadii = radius + otherEsfera->radius;
+            return distance <= sumOfRadii;
+        }
+
+        //No hay colision
+        return false;
     }
 };
 

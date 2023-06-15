@@ -27,8 +27,7 @@ GLuint Esfera::setup() {
             textureCoords.push_back( vec2(U, V) );
         }
     }
-    // Now generate the index buffer
-    //vector<GLuint> indicies;
+
     for( int i = 0; i < slices * stacks + slices; ++i ) {
         indices.push_back( i );
         indices.push_back( i + slices + 1  );
